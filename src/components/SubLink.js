@@ -7,4 +7,6 @@ export default styled(Link)`
   font-size: 18px;
   text-decoration: none;
   margin: 17px 0;
+  cursor: pointer;
+  text-align: center;
 `;

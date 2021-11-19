@@ -4,8 +4,8 @@ import "./assets/styles/style.css";
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/public/Home";
-import SignIn from "./pages/public/SignIn";
 import SignUp from "./pages/public/SignUp";
+import SignIn from "./pages/public/SignIn";
 
 export default function App() {
   return (
