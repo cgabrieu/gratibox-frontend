@@ -32,24 +32,33 @@ export default function SignUp() {
     setTimeout(() => setShowErrorMessage(false), 3000);
   }
 
-  function submitSignIn(event) {
+  function submitSignUp(event) {
     event.preventDefault();
     if (userInfo.email.length < 5 || !userInfo.email.match(/@/)) {
       handleShowErrorMessage("Insira um e-mail válido");
       return;
     }
-    if (!password.length) {
-      handleShowErrorMessage("A senha não pode ficar em branco");
+    if (userInfo.password.length < 6) {
+      handleShowErrorMessage("A senha deve ter pelo menos 6 caracteres");
+      return;
+    }
+    if (userInfo.name.length < 3) {
+      handleShowErrorMessage("Insira um nome válido");
+      return;
+    }
+    if (userInfo.password !== userInfo.passwordRepeat) {
+      handleShowErrorMessage("Senhas não conferem");
       return;
     }
     setIsLoading(true);
     postSignUp(userInfo)
-      .then((res) => {
+      .then(() => {
         setIsLoading(false);
         navigate("/sign-in");
       })
-      .catch(() => {
-        handleShowErrorMessage("Usuário ou senha inválidos");
+      .catch((err) => {
+        if (err.response.status === 409) handleShowErrorMessage("E-mail já cadastrado");
+        else if (err.response.status === 400) handleShowErrorMessage("Entradas não permitidas");
         setIsLoading(false);
       });
   }
@@ -57,7 +66,7 @@ export default function SignUp() {
   return (
     <MainContainer paddingTop="70px">
       <Title marginBottom="40px">Bem vindo ao GratiBox</Title>
-      <Form onSubmit={submitSignIn}>
+      <Form onSubmit={submitSignUp}>
         <div>
           <Input
             placeholder="Nome"
