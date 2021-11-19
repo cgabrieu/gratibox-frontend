@@ -1,7 +1,7 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import styled from 'styled-components';
-import { useHref } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import MainContainer from '../../components/MainContainer';
 import SubTitle from '../../components/SubTitle';
 import Title from '../../components/Title';
@@ -10,13 +10,14 @@ import Button from '../../components/Button';
 import SubLink from '../../components/SubLink';
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <MainContainer paddingTop="50px">
       <Title marginBottom="20px">Bem-vindo ao GratiBox</Title>
       <SubTitle>Receba em casa um box com chás, produtos organicos, incensos e muito mais...</SubTitle>
       <BackgroundImageHome src={MeditionWomanImage} />
       <HomeFooter>
-        <Button onClick={() => useHref("/sign-up")}>Quero começar</Button>
+        <Button onClick={() => navigate('/sign-up')}>Quero começar</Button>
         <SubLink to="/sign-in">Já sou grato</SubLink>
       </HomeFooter>
     </MainContainer>
