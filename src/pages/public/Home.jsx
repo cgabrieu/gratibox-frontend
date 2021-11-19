@@ -1,6 +1,7 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import styled from 'styled-components';
+import { useHref } from 'react-router';
 import MainContainer from '../../components/MainContainer';
 import SubTitle from '../../components/SubTitle';
 import Title from '../../components/Title';
@@ -15,7 +16,7 @@ export default function Home() {
       <SubTitle>Receba em casa um box com chás, produtos organicos, incensos e muito mais...</SubTitle>
       <BackgroundImageHome src={MeditionWomanImage} />
       <HomeFooter>
-        <Button>Quero começar</Button>
+        <Button onClick={() => useHref("/sign-up")}>Quero começar</Button>
         <SubLink to="/sign-in">Já sou grato</SubLink>
       </HomeFooter>
     </MainContainer>

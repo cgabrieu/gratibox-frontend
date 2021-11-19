@@ -5,4 +5,6 @@ export default styled(Link)`
   color: #FFF;
   font-weight: bold;
   font-size: 18px;
+  text-decoration: none;
+  margin: 17px 0;
 `;
