@@ -7,6 +7,7 @@ const api = axios.create({
       : 'http://localhost:4000',
 });
 
+// eslint-disable-next-line no-unused-vars
 function getConfig(token) {
   return {
     headers: {
