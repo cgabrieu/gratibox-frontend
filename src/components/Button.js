@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 
 export default styled.button`
-  width: 326px;
+  width: 220px;
   border: none;
+  outline: none;
   padding: 16px;
-  background-color: #A328D6;
+  background-color: #8C97EA;
   color: #FFF;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
 
-  @media(max-width: 326px) {
+  @media(max-width: 220px) {
     width: 100%;
     border-radius: 0px;
   }
