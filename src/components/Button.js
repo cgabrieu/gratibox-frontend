@@ -11,6 +11,7 @@ export default styled.button`
   cursor: pointer;
   font-weight: bold;
   font-size: 18px;
+  margin-top: 10px;
 
   @media(max-width: 220px) {
     width: 100%;
