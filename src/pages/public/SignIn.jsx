@@ -2,6 +2,7 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from "react";
 import Loader from "react-loader-spinner";
+import { Animate } from "react-simple-animate";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Form from "../../components/Form";
@@ -17,29 +18,35 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
 
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
+
+  function handleShowErrorMessage(msg) {
+    setErrorMessage(msg);
+    setShowErrorMessage(true);
+    setTimeout(() => setShowErrorMessage(false), 3000);
+  }
 
   function submitSignIn(event) {
     event.preventDefault();
-    setErrorMessage('');
     if (email.length < 5 || !email.match(/@/)) {
-      setErrorMessage('Insira um e-mail válido');
+      handleShowErrorMessage("Insira um e-mail válido");
       return;
-    } 
+    }
     if (!password.length) {
-      setErrorMessage('A senha não pode ficar em branco');
+      handleShowErrorMessage("A senha não pode ficar em branco");
       return;
     }
     setIsLoading(true);
     postSignIn(email, password)
       .then((res) => {
         setUser(res.data);
-        localStorage.setItem('user', JSON.stringify(res.data));
+        localStorage.setItem("user", JSON.stringify(res.data));
         setIsLoading(false);
       })
       .catch(() => {
-        setErrorMessage("Usuário ou senha inválidos");
+        handleShowErrorMessage("Usuário ou senha inválidos");
         setIsLoading(false);
       });
   }
@@ -60,19 +67,20 @@ export default function SignIn() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <ErrorMessage>{errorMessage}</ErrorMessage>
+          <Animate
+            play={showErrorMessage}
+            start={{ opacity: 0 }} end={{ opacity: 1 }}
+          >
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          </Animate>
         </div>
         <div>
           <Button>
-            {isLoading
-              ? <Loader
-                  type="TailSpin"
-                  color="#fff"
-                  height={30}
-                  width={30}
-                />
-              : "Login"
-            }
+            {isLoading ? (
+              <Loader type="TailSpin" color="#fff" height={30} width={30} />
+            ) : (
+              "Login"
+            )}
           </Button>
           <SubLink to="/sign-up">Ainda não sou grato</SubLink>
         </div>
