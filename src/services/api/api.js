@@ -23,5 +23,9 @@ export function postSignIn(email, password) {
 }
 
 export function postSignUp(inputFields) {
-  return axios.post('/auth/sign-up', inputFields);
+  return api.post('/auth/sign-up', {
+    name: inputFields.name,
+    email: inputFields.email,
+    password: inputFields.password
+  });
 }

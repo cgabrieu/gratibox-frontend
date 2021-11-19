@@ -12,7 +12,7 @@ margin-bottom: 8px;
 color: #464343;
 font-size: 24px;
 font-weight: 500;
-padding-left: 15px;
+padding: 0 15px;
 &::placeholder {
   color: #bfb6b6;
 }
