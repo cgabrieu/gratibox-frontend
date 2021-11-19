@@ -10,8 +10,7 @@ import React, {
 const AuthContext = createContext({});
 
 const AuthProvider = (props) => {
-  const userLocal = localStorage.getItem('user');
-  const [user, setUser] = useState(JSON.parse(userLocal));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const logout = () => {
     setUser(null);
