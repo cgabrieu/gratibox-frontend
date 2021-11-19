@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export default styled.p`
-  font-size: 13px;
-  color: #c15050;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 500;
   text-align: center;
-  margin: 10px 0;
+  margin: 5px 0;
 `;
