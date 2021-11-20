@@ -4,6 +4,6 @@ export default styled.h1`
   font-size: 26px;
   color: #ffffff;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
   margin-bottom: ${({ marginBottom }) => marginBottom};
 `;
