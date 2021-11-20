@@ -16,6 +16,7 @@ export default function Plans() {
       <SubTitlePlans>
         Você ainda não assinou um plano, que tal começar agora?
       </SubTitlePlans>
+      Não deu
     </MainContainer>
   );
 }
