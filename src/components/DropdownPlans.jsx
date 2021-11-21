@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useAnimate } from "react-simple-animate";
 import { ReactComponent as ArrowDownIcon } from "../assets/icons/arrow.svg";
 
-export default function Dropdown({ name, children, open }) {
+export default function DropdownPlans({ name, children, open }) {
   const { play, style, isPlaying = open } = useAnimate({
     start: { height: 0, opacity: 0 },
     end: { height: "50px", opacity: 1 },

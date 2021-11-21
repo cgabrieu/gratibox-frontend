@@ -11,7 +11,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import MeditionWomanImage from "../../assets/images/woman-subscribe.png";
 import Button from "../../components/Button";
-import Dropdown from "../../components/Dropdown";
+import DropdownPlans from "../../components/DropdownPlans";
 
 export default function SubscribePlan() {
   const { user } = useAuth();
@@ -41,7 +41,7 @@ export default function SubscribePlan() {
             showThumbs={false}
           >
             <>
-              <Dropdown name="Plano">
+              <DropdownPlans name="Plano">
                 <div>
                   <Checkbox
                     onClick={() => setPlan("Weekly")}
@@ -56,8 +56,8 @@ export default function SubscribePlan() {
                   />
                   <p>Mensal</p>
                 </div>
-              </Dropdown>
-              <Dropdown open name="Entrega">
+              </DropdownPlans>
+              <DropdownPlans open name="Entrega">
                 {plan === "Weekly" ? (
                   <>
                     <div>
@@ -107,8 +107,8 @@ export default function SubscribePlan() {
                     </div>
                   </>
                 )}
-              </Dropdown>
-              <Dropdown name="Quero receber">
+              </DropdownPlans>
+              <DropdownPlans name="Quero receber">
                 <div>
                   <Checkbox
                     onClick={() => onChangeCheck("Chás")}
@@ -131,7 +131,7 @@ export default function SubscribePlan() {
                   />
                   <p>Produtos Orgânicos</p>
                 </div>
-              </Dropdown>
+              </DropdownPlans>
             </>
             <>
               <InputAddress placeholder="Nome completo" />
@@ -140,7 +140,38 @@ export default function SubscribePlan() {
               <LastFormContainer>
                 <LastInputAddress placeholder="Cidade" />
                 <div>
-                  <LastInputAddress placeholder="Estado" />
+                  <DropdownState
+                    options={[
+                      { value: "AC", label: "Acre" },
+                      { value: "AL", label: "Alagoas" },
+                      { value: "AP", label: "Amapá" },
+                      { value: "AM", label: "Amazonas" },
+                      { value: "BA", label: "Bahia" },
+                      { value: "CE", label: "Ceará" },
+                      { value: "DF", label: "Distrito Federal" },
+                      { value: "ES", label: "Espirito Santo" },
+                      { value: "GO", label: "Goiás" },
+                      { value: "MA", label: "Maranhão" },
+                      { value: "MS", label: "Mato Grosso do Sul" },
+                      { value: "MT", label: "Mato Grosso" },
+                      { value: "MG", label: "Minas Gerais" },
+                      { value: "PA", label: "Pará" },
+                      { value: "PB", label: "Paraíba" },
+                      { value: "PR", label: "Paraná" },
+                      { value: "PE", label: "Pernambuco" },
+                      { value: "PI", label: "Piauí" },
+                      { value: "RJ", label: "Rio de Janeiro" },
+                      { value: "RN", label: "Rio Grande do Norte" },
+                      { value: "RS", label: "Rio Grande do Sul" },
+                      { value: "RO", label: "Rondônia" },
+                      { value: "RR", label: "Roraima" },
+                      { value: "SC", label: "Santa Catarina" },
+                      { value: "SP", label: "São Paulo" },
+                      { value: "SE", label: "Sergipe" },
+                      { value: "TO", label: "Tocantins" },
+                    ]}
+                    placeholder="Estado"
+                  />
                 </div>
               </LastFormContainer>
             </>
@@ -151,6 +182,20 @@ export default function SubscribePlan() {
     </MainContainer>
   );
 }
+
+const DropdownState = styled(Dropdown)`
+  background: rgba(224, 209, 237, 0.62);
+  height: 44px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  padding-left: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #4d65a8;
+`;
 
 const LastFormContainer = styled.div`
   display: flex;
@@ -176,11 +221,8 @@ const InputAddress = styled.input`
 `;
 
 const LastInputAddress = styled(InputAddress)`
-  width: 50%;
-  &:first-child {
-    width: 80%;
-    margin-right: 10px;
-  }
+  width: 60%;
+  margin-right: 10px;
 `;
 
 const Checkbox = styled.span`
