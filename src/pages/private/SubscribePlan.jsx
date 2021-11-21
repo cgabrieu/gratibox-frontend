@@ -77,8 +77,8 @@ export default function SubscribePlan() {
               <>
                 <div>
                   <Checkbox
-                    onClick={() => setDay("01")}
-                    isChecked={day === "01"}
+                    onClick={() => setDay("1")}
+                    isChecked={day === "1"}
                   />
                   <p>Dia 01</p>
                 </div>
