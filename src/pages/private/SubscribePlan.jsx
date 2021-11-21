@@ -2,6 +2,7 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import MainContainer from "../../components/MainContainer";
 import SubTitle from "../../components/SubTitle";
 import Title from "../../components/Title";
@@ -13,8 +14,8 @@ import Dropdown from "../../components/Dropdown";
 
 export default function SubscribePlan() {
   const { user } = useAuth();
-
-  const [plan, setPlan] = useState("Monthly");
+  
+  const [plan, setPlan] = useState(useLocation().state);
   const [day, setDay] = useState(null);
   const [products, setProducts] = useState([]);
 
@@ -48,7 +49,7 @@ export default function SubscribePlan() {
               <p>Mensal</p>
             </div>
           </Dropdown>
-          <Dropdown name="Entrega">
+          <Dropdown open name="Entrega">
             {plan === "Weekly" ? (
               <>
                 <div>

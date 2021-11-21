@@ -3,6 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Carousel } from "react-responsive-carousel";
+import { useNavigate } from "react-router-dom";
 import MainContainer from "../../components/MainContainer";
 import SubTitle from "../../components/SubTitle";
 import Title from "../../components/Title";
@@ -14,6 +15,8 @@ import Button from "../../components/Button";
 
 export default function Plans() {
   const { user } = useAuth();
+
+  const navigate = useNavigate();
 
   return (
     <MainContainer paddingTop="15%">
@@ -35,7 +38,11 @@ export default function Plans() {
               <br /> <br />
               Ideal para quem quer exercer a gratidão todos os dias.
             </TextBoxInfo>
-            <ButtonBoxInfo>Assinar</ButtonBoxInfo>
+            <ButtonBoxInfo
+              onClick={() => navigate("/subscribe-plan", { state: "Weekly" })}
+            >
+              Assinar
+            </ButtonBoxInfo>
           </BoxInfoContainer>
           <BoxInfoContainer>
             <img src={MeditionWomanImage2} alt="Woman Meditating" />
@@ -44,7 +51,11 @@ export default function Plans() {
               <br /> <br />
               Ideal para quem está começando agora.
             </TextBoxInfo>
-            <ButtonBoxInfo>Assinar</ButtonBoxInfo>
+            <ButtonBoxInfo
+              onClick={() => navigate("/subscribe-plan", { state: "Monthly" })}
+            >
+              Assinar
+            </ButtonBoxInfo>
           </BoxInfoContainer>
         </Carousel>
       </PlansContainer>
@@ -67,6 +78,7 @@ const TextBoxInfo = styled.p`
   font-weight: bold;
   font-size: 18px;
   color: #4d65a8;
+  line-height: 20px;
   text-align: left;
   padding: 20px;
   @media (max-width: 355px) {
