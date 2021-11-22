@@ -31,3 +31,12 @@ export function postSignUp(inputFields) {
     password: inputFields.password
   });
 }
+
+export function postSubscription(plan, day, receivingOptions, address, token) {
+  return api.post('/subscribe', {
+    plan_type: plan,
+    day,
+    receiving_options: receivingOptions,
+    address,
+  }, getConfig(token));
+}

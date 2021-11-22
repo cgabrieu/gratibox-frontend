@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
+import cep from "cep-promise";
+import { Animate } from "react-simple-animate";
 import MainContainer from "../../components/MainContainer";
 import SubTitle from "../../components/SubTitle";
 import Title from "../../components/Title";
@@ -11,6 +13,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import MeditionWomanImage from "../../assets/images/woman-subscribe.png";
 import Button from "../../components/Button";
 import Dropdown from "../../components/Dropdown";
+import ErrorMessage from "../../components/ErrorMessage";
+import { postSubscription } from "../../services/api/api";
 
 export default function SubscribePlan() {
   const { user } = useAuth();
@@ -44,8 +48,42 @@ export default function SubscribePlan() {
     }
   }
 
+  function handleGetAddress() {
+    cep(address.cep).then((res) => {
+      setAddress({
+        ...address,
+        address: `${res.street}, ${res.neighborhood}`,
+        city: res.city,
+        state: res.state,
+      });
+    });
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
+    if (address.name.length < 5) {
+      handleShowErrorMessage("Insira um nome válido");
+      return;
+    }
+    if (address.cep.length !== 9) {
+      handleShowErrorMessage("Insira um cep válido");
+      return;
+    }
+    if (address.address.length < 3) {
+      handleShowErrorMessage("Insira um endereço válido");
+      return;
+    }
+    if (address.city.length < 2) {
+      handleShowErrorMessage("Insira uma cidade válida");
+      return;
+    }
+    const receivingOptions = products.map((product) => ({
+        option_name: product,
+      }));
+    postSubscription(plan, day, receivingOptions, address, user.token)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+      
   }
 
   return (
@@ -177,6 +215,7 @@ export default function SubscribePlan() {
                 onChange={(e) =>
                   setAddress({ ...address, cep: e.target.value })
                 }
+                onKeyPress={(e) => e.key === "Enter" && handleGetAddress()}
               />
               <LastFormContainer>
                 <LastInputAddress
@@ -187,19 +226,40 @@ export default function SubscribePlan() {
                   }
                 />
                 <div>
-                  <LastInputAddress placeholder="Estado" />
+                  <LastInputAddress
+                    placeholder="Estado"
+                    value={address.state}
+                    onChange={(e) =>
+                      setAddress({ ...address, state: e.target.value })
+                    }
+                  />
                 </div>
               </LastFormContainer>
             </>
           </Carousel>
         </BoxInfoContainer>
-        {errorMessage}
+        <Animate
+            play={showErrorMessage}
+            start={{ opacity: 0 }} end={{ opacity: 1 }}
+          >
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          </Animate>
         {selectSection === 0 ? (
-          <ButtonBoxInfo onClick={() => setSelectSection(1)}>
+          <ButtonBoxInfo onClick={() => {
+            if (!day) {
+              handleShowErrorMessage("Defina o dia para receber sua box");
+              return;
+            }
+            if (!products.length) {
+              handleShowErrorMessage("Escolha pelo menos um produto");
+              return;
+            }
+            setSelectSection(1);
+          }}>
             Próximo
           </ButtonBoxInfo>
         ) : (
-          <ButtonBoxInfo onClick={() => console.log("ACABOU")}>
+          <ButtonBoxInfo onClick={handleSubmit}>
             Finalizar
           </ButtonBoxInfo>
         )}

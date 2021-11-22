@@ -30,6 +30,7 @@ export default function Plans() {
           showIndicators={false}
           showStatus={false}
           showThumbs={false}
+          emulateTouch
         >
           <BoxInfoContainer>
             <img src={MeditionWomanImage} alt="Woman Meditating" />
