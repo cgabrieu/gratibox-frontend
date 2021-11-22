@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/function-component-definition */
 import React, { useState } from "react";
@@ -6,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import cep from "cep-promise";
 import { Animate } from "react-simple-animate";
+import NumberFormat from "react-number-format";
 import Loader from "react-loader-spinner";
 import MainContainer from "../../components/MainContainer";
 import SubTitle from "../../components/SubTitle";
@@ -67,7 +69,7 @@ export default function SubscribePlan() {
       handleShowErrorMessage("Insira um nome válido");
       return;
     }
-    if (address.cep.length !== 9) {
+    if (address.cep.length < 8) {
       handleShowErrorMessage("Insira um cep válido");
       return;
     }
@@ -85,18 +87,19 @@ export default function SubscribePlan() {
     }
     setIsLoading(true);
     const receivingOptions = products.map((product) => ({
-        option_name: product,
-      }));
+      option_name: product,
+    }));
     postSubscription(plan, day, receivingOptions, address, user.token)
       .then(() => {
-        navigate('/subscription-details')
+        navigate("/subscription");
         setIsLoading(false);
       })
       .catch(() => {
-        handleShowErrorMessage("Não foi possível assinar o serviço, talvez vocẽ já possua uma assinatura.");
+        handleShowErrorMessage(
+          "Não foi possível assinar o serviço, talvez você já possua uma assinatura."
+        );
         setIsLoading(false);
-      })
-      
+      });
   }
 
   return (
@@ -222,12 +225,13 @@ export default function SubscribePlan() {
                   setAddress({ ...address, address: e.target.value })
                 }
               />
-              <InputAddress
+              <NumberFormat
                 placeholder="CEP"
-                value={address.cep}
-                onChange={(e) =>
-                  setAddress({ ...address, cep: e.target.value })
-                }
+                customInput={InputAddress}
+                format="#####-###"
+                onValueChange={(e) => {
+                  setAddress({ ...address, cep: e.value });
+                }}
                 onKeyPress={(e) => e.key === "Enter" && handleGetAddress()}
               />
               <LastFormContainer>
@@ -240,8 +244,9 @@ export default function SubscribePlan() {
                 />
                 <div>
                   <LastInputAddress
-                    placeholder="Estado"
+                    placeholder="Sigla Estado"
                     value={address.state}
+                    maxLength={2}
                     onChange={(e) =>
                       setAddress({ ...address, state: e.target.value })
                     }
@@ -252,23 +257,26 @@ export default function SubscribePlan() {
           </Carousel>
         </BoxInfoContainer>
         <Animate
-            play={showErrorMessage}
-            start={{ opacity: 0 }} end={{ opacity: 1 }}
-          >
-            <ErrorMessage>{errorMessage}</ErrorMessage>
-          </Animate>
+          play={showErrorMessage}
+          start={{ opacity: 0 }}
+          end={{ opacity: 1 }}
+        >
+          <ErrorMessage>{errorMessage}</ErrorMessage>
+        </Animate>
         {selectSection === 0 ? (
-          <ButtonBoxInfo onClick={() => {
-            if (!day) {
-              handleShowErrorMessage("Defina o dia para receber sua box");
-              return;
-            }
-            if (!products.length) {
-              handleShowErrorMessage("Escolha pelo menos um produto");
-              return;
-            }
-            setSelectSection(1);
-          }}>
+          <ButtonBoxInfo
+            onClick={() => {
+              if (!day) {
+                handleShowErrorMessage("Defina o dia para receber sua box");
+                return;
+              }
+              if (!products.length) {
+                handleShowErrorMessage("Escolha pelo menos um produto");
+                return;
+              }
+              setSelectSection(1);
+            }}
+          >
             Próximo
           </ButtonBoxInfo>
         ) : (
