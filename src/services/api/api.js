@@ -40,3 +40,7 @@ export function postSubscription(plan, day, receivingOptions, address, token) {
     address,
   }, getConfig(token));
 }
+
+export function getSubscription(token) {
+  return api.get('/subscription', getConfig(token));
+}
