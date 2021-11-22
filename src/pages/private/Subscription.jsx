@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import weekday from "dayjs/plugin/weekday";
 import Loader from "react-loader-spinner";
 import MainContainer from "../../components/MainContainer";
 import SubTitle from "../../components/SubTitle";
@@ -18,14 +19,33 @@ export default function Subscription() {
   const { user } = useAuth();
 
   const [subscription, setSubscription] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
+  dayjs.extend(weekday);
+
   useEffect(() => {
-    getSubscription(user.token).then((res) => {
-      setSubscription(res.data);
-    });
+    getSubscription(user.token)
+      .then((res) => {
+        setSubscription(res.data);
+      })
+      .catch((err) => err.response?.status === 401 && navigate("/sign-in"));
   }, []);
+
+  function getNextDate(day, n) {
+    let result = dayjs();
+    if (day === "Segunda") {
+      result = result.weekday(1 + 7 * n);
+    } else if (day === "Quarta") {
+      result = result.weekday(3 + 7 * n);
+    } else if (day === "Sexta") {
+      result = result.weekday(5 + 7 * n);
+    } else if (day === "1"){
+      result = result.weekday(5 + 7 * n);
+    }
+    return result.format("DD/MM/YYYY");
+  }
 
   return (
     <MainContainer paddingTop="15%">
@@ -40,11 +60,23 @@ export default function Subscription() {
               <span>
                 {subscription.plan_type === "Monthly" ? "Mensal" : "Semanal"}
               </span>
-              Data da assinatura:{" "}
-              <span>
-                {dayjs()}
-              </span>
             </TextBoxInfo>
+            <TextBoxInfo>
+              Data da assinatura:{" "}
+              <span>{dayjs(subscription.created_at).format("DD/MM/YYYY")}</span>
+            </TextBoxInfo>
+            <TextBoxInfo>
+              Próximas entregas:
+              <br />
+            </TextBoxInfo>
+            <DeliveryDate>{getNextDate(subscription.day, 0)}</DeliveryDate>
+            <DeliveryDate>{getNextDate(subscription.day, 1)}</DeliveryDate>
+            <DeliveryDate>{getNextDate(subscription.day, 2)}</DeliveryDate>
+            <ContainerOptions>
+              {subscription.receiving_options.map((option) => (
+                <span key={Math.random()}>{option.option_name}</span>
+              ))}
+            </ContainerOptions>
           </BoxInfoContainer>
         ) : (
           <LoaderContainer>
@@ -56,6 +88,22 @@ export default function Subscription() {
   );
 }
 
+const ContainerOptions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0 25px;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #e63c80;
+`;
+
+const DeliveryDate = styled.p`
+  margin: 5px 45px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #e63c80;
+`;
+
 const LoaderContainer = styled.div`
   height: 100%;
   display: flex;
@@ -63,15 +111,13 @@ const LoaderContainer = styled.div`
   align-items: center;
 `;
 
-const TextBoxInfo = styled.p`
+const TextBoxInfo = styled.div`
   font-weight: bold;
   font-size: 14px;
   color: #4d65a8;
-  line-height: 20px;
   text-align: left;
-  padding: 20px;
-
-  > span {
+  margin: 5px 15px;
+  span {
     font-size: 14px;
     color: #e63c80;
   }
@@ -84,15 +130,16 @@ const TextBoxInfo = styled.p`
 
 const BoxInfoContainer = styled.div`
   width: 100%;
-  height: 400px;
-  max-height: 399px;
+  max-height: 400px;
   background-color: #fff;
   border-radius: 25px;
+  padding-bottom: 15px;
   @media (max-width: 355px) {
     height: 300px;
   }
-  > img {
+  img {
     width: 100%;
+    margin-bottom: 10px;
   }
 `;
 

@@ -92,7 +92,8 @@ export default function SubscribePlan() {
         navigate('/subscription-details')
         setIsLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         handleShowErrorMessage("Não foi possível assinar o serviço, talvez vocẽ já possua uma assinatura.");
         setIsLoading(false);
       })
