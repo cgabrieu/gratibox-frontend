@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 import Loader from "react-loader-spinner";
 import MainContainer from "../../components/MainContainer";
 import SubTitle from "../../components/SubTitle";
@@ -41,7 +42,7 @@ export default function Subscription() {
               </span>
               Data da assinatura:{" "}
               <span>
-                {subscription.plan_type === "Monthly" ? "Mensal" : "Semanal"}
+                {dayjs()}
               </span>
             </TextBoxInfo>
           </BoxInfoContainer>
