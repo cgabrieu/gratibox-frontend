@@ -2,10 +2,11 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import cep from "cep-promise";
 import { Animate } from "react-simple-animate";
+import Loader from "react-loader-spinner";
 import MainContainer from "../../components/MainContainer";
 import SubTitle from "../../components/SubTitle";
 import Title from "../../components/Title";
@@ -18,6 +19,7 @@ import { postSubscription } from "../../services/api/api";
 
 export default function SubscribePlan() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [plan, setPlan] = useState(useLocation().state);
   const [day, setDay] = useState(null);
@@ -77,12 +79,23 @@ export default function SubscribePlan() {
       handleShowErrorMessage("Insira uma cidade válida");
       return;
     }
+    if (address.state.length !== 2) {
+      handleShowErrorMessage("Insira um estado válido (sigla)");
+      return;
+    }
+    setIsLoading(true);
     const receivingOptions = products.map((product) => ({
         option_name: product,
       }));
     postSubscription(plan, day, receivingOptions, address, user.token)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
+      .then(() => {
+        navigate('/subscription-details')
+        setIsLoading(false);
+      })
+      .catch(() => {
+        handleShowErrorMessage("Não foi possível assinar o serviço, talvez vocẽ já possua uma assinatura.");
+        setIsLoading(false);
+      })
       
   }
 
@@ -260,7 +273,11 @@ export default function SubscribePlan() {
           </ButtonBoxInfo>
         ) : (
           <ButtonBoxInfo onClick={handleSubmit}>
-            Finalizar
+            {isLoading ? (
+              <Loader type="TailSpin" color="#fff" height={30} width={30} />
+            ) : (
+              "Finalizar"
+            )}
           </ButtonBoxInfo>
         )}
       </PlansContainer>
