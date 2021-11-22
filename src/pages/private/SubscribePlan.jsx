@@ -89,11 +89,10 @@ export default function SubscribePlan() {
       }));
     postSubscription(plan, day, receivingOptions, address, user.token)
       .then(() => {
-        navigate('/subscription-details')
+        navigate('/subscription');
         setIsLoading(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         handleShowErrorMessage("Não foi possível assinar o serviço, talvez vocẽ já possua uma assinatura.");
         setIsLoading(false);
       })
