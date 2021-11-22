@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Loader from "react-loader-spinner";
 import { Animate } from "react-simple-animate";
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Form from "../../components/Form";
@@ -22,10 +23,16 @@ export default function SignIn() {
 
   const { setUser } = useAuth();
 
+  const navigate = useNavigate();
+
   function handleShowErrorMessage(msg) {
     setErrorMessage(msg);
     setShowErrorMessage(true);
     setTimeout(() => setShowErrorMessage(false), 3000);
+  }
+
+  async function checkIsSubscriber() {
+    return true;
   }
 
   function submitSignIn(event) {
@@ -40,10 +47,11 @@ export default function SignIn() {
     }
     setIsLoading(true);
     postSignIn(email, password)
-      .then((res) => {
+      .then(async (res) => {
         setUser(res.data);
         localStorage.setItem("user", JSON.stringify(res.data));
         setIsLoading(false);
+        if (await checkIsSubscriber()) navigate('/plans');
       })
       .catch(() => {
         handleShowErrorMessage("Usuário ou senha inválidos");
