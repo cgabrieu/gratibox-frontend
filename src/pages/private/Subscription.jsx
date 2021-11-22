@@ -12,14 +12,12 @@ import Title from "../../components/Title";
 import { useAuth } from "../../contexts/AuthContext";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import MeditionWomanImage from "../../assets/images/woman-subscribe.png";
-import Button from "../../components/Button";
 import { getSubscription } from "../../services/api/api";
 
 export default function Subscription() {
   const { user } = useAuth();
 
   const [subscription, setSubscription] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -30,20 +28,36 @@ export default function Subscription() {
       .then((res) => {
         setSubscription(res.data);
       })
-      .catch((err) => err.response?.status === 401 && navigate("/sign-in"));
+      .catch((err) => {
+        if (err.response?.status === 401) navigate("/sign-in");
+        else if ((err.response?.status === 404)) navigate("/plans");
+      });
   }, []);
 
   function getNextDate(day, n) {
-    let result = dayjs();
+    let result = dayjs();;
+    if (day === "1" || day === "10" || day === "20") {
+      if (result.isAfter(`YYYY-MM-${day}`, 'day')) {
+        result = dayjs(result.add(1, 'month').format(`YYYY-MM-${day}`));
+      } else {
+        result = dayjs(result.format(`YYYY-MM-${day}`));
+      }
+    }
+
     if (day === "Segunda") {
       result = result.weekday(1 + 7 * n);
     } else if (day === "Quarta") {
       result = result.weekday(3 + 7 * n);
     } else if (day === "Sexta") {
       result = result.weekday(5 + 7 * n);
-    } else if (day === "1"){
-      result = result.weekday(5 + 7 * n);
+    } else {
+      result = result.add((n), 'month');
     }
+
+    if (result.weekday() === 6 || result.weekday() === 0) {
+      result = dayjs(result.weekday(1 + 7));
+    }
+
     return result.format("DD/MM/YYYY");
   }
 
@@ -90,7 +104,7 @@ export default function Subscription() {
 
 const ContainerOptions = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0 25px;
   margin-top: 20px;
   font-size: 16px;

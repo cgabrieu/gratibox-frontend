@@ -31,10 +31,6 @@ export default function SignIn() {
     setTimeout(() => setShowErrorMessage(false), 3000);
   }
 
-  async function checkIsSubscriber() {
-    return true;
-  }
-
   function submitSignIn(event) {
     event.preventDefault();
     if (email.length < 5 || !email.match(/@/)) {
@@ -47,11 +43,11 @@ export default function SignIn() {
     }
     setIsLoading(true);
     postSignIn(email, password)
-      .then(async (res) => {
+      .then((res) => {
         setUser(res.data);
         localStorage.setItem("user", JSON.stringify(res.data));
+        navigate("/subscription");
         setIsLoading(false);
-        if (await checkIsSubscriber()) navigate('/plans');
       })
       .catch(() => {
         handleShowErrorMessage("Usuário ou senha inválidos");
@@ -77,7 +73,8 @@ export default function SignIn() {
           />
           <Animate
             play={showErrorMessage}
-            start={{ opacity: 0 }} end={{ opacity: 1 }}
+            start={{ opacity: 0 }}
+            end={{ opacity: 1 }}
           >
             <ErrorMessage>{errorMessage}</ErrorMessage>
           </Animate>

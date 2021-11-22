@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/function-component-definition */
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Carousel } from "react-responsive-carousel";
 import { useNavigate } from "react-router-dom";
