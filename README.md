@@ -1,11 +1,14 @@
-## Gratibox 😊
+# Gratibox 😊
 ##### A simple but wonderful application for you to express your gratitude. Subscribe and receive at home wonderful products to keep yourself grateful.
 
 <div align="center"/>
 
-  ### Preview
+  ### Preview 🖼️
   <img src="https://i.ibb.co/YXGcBgd/ezgif-com-gif-maker.gif" width="300px" alt="Gratibox Preview" />
+  
+  ### Deploy here 📱 [Gratibox](https://gratibox-f.vercel.app)
 </div>
+<br>
 
 ## Features 💅
 
@@ -35,3 +38,22 @@
   - [x] City
   - [x] State
 - [x] After completion, you will be able to access your plan info, upcoming delivery dates, and the products you have chosen.
+
+<br>
+
+## How to run 🏃
+
+First, clone git repository:
+
+    git clone https://github.com/cgabrieu/gratibox-frontend.git
+
+Then, enter the project directory and install dependencies with npm:
+
+    cd gratibox-frontend
+    npm i
+
+Now, to start project do:
+
+    npm start
+    
+    
